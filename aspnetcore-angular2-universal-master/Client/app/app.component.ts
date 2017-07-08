@@ -2,12 +2,13 @@
 import { Router, NavigationEnd, ActivatedRoute, PRIMARY_OUTLET } from '@angular/router';
 import { Meta, Title, DOCUMENT, MetaDefinition } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
-import { isPlatformServer } from '@angular/common';
+import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { LinkService } from './shared/link.service';
-
+import { TransferState } from '../modules/transfer-state/transfer-state';
 // i18n support
 import { TranslateService } from '@ngx-translate/core';
 import { REQUEST } from './shared/constants/request';
+import { OidcSecurityService } from "../modules/angular-auth-oidc-client";
 
 @Component({
     selector: 'app',
@@ -31,7 +32,10 @@ export class AppComponent implements OnInit, OnDestroy {
         private meta: Meta,
         private linkService: LinkService,
         public translate: TranslateService,
-        @Inject(REQUEST) private request
+        private state: TransferState,
+        private oidcSecurityService: OidcSecurityService,
+        @Inject(REQUEST) private request,
+        @Inject(PLATFORM_ID) private platformId: Object
     ) {
         // this language will be used as a fallback when a translation isn't found in the current language
         translate.setDefaultLang('en');
@@ -42,9 +46,14 @@ export class AppComponent implements OnInit, OnDestroy {
         console.log(`What's our REQUEST Object look like?`);
         console.log(`The Request object only really exists on the Server, but on the Browser we can at least see Cookies`);
         console.log(this.request);
+        console.log(state);
     }
 
     ngOnInit() {
+        if (isPlatformBrowser(this.platformId)) {
+            this.oidcSecurityService.authorizedCallback();
+        }
+        
         // Change "Title" on every navigationEnd event
         // Titles come from the data.title property on all Routes (see app.routes.ts)
         this._changeTitleOnNavigation();

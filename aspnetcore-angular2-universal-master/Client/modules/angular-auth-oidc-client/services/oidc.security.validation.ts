@@ -158,8 +158,10 @@ export class OidcSecurityValidation {
     }
 
     validateStateFromHashCallback(state: any, local_state: any): boolean {
-        if (state != local_state) {
-            this.oidcSecurityCommon.logDebug('ValidateStateFromHashCallback failed, state: ' + state + ' local_state:' + local_state);
+        let tmpState = state || '';
+        let tmpLocal = local_state || '';
+        if (tmpState != tmpLocal) {
+            this.oidcSecurityCommon.logDebug('ValidateStateFromHashCallback failed, state: ' + tmpState + ' local_state:' + tmpLocal);
             return false;
         }
 

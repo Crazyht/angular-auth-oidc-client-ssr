@@ -25,6 +25,14 @@ namespace QuickstartIdentityServer
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(LogLevel.Debug);
+            loggerFactory.AddDebug();
+            app.UseCors((builder) =>
+            {
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+                builder.AllowAnyOrigin();
+                builder.AllowCredentials();
+            });
             app.UseDeveloperExceptionPage();
 
             app.UseIdentityServer();

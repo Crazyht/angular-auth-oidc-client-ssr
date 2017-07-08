@@ -73,6 +73,14 @@ namespace AspCoreServer
 
         DbInitializer.Initialize(context);
 
+      app.UseCors((builder) =>
+      {
+        builder.AllowAnyHeader();
+        builder.AllowAnyMethod();
+        builder.AllowAnyOrigin();
+        builder.AllowCredentials();
+      });
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();

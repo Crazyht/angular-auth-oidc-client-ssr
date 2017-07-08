@@ -141,15 +141,8 @@ export function createTranslateLoader(http: Http, baseHref) {
             { path: 'lazy', loadChildren: './containers/+lazy/lazy.module#LazyModule'},
           
             {
-                path: '**', component: NotFoundComponent,
-                data: {
-                    title: '404 - Not found',
-                    meta: [{ name: 'description', content: '404 - Error' }],
-                    links: [
-                        { rel: 'canonical', href: 'http://blogs.example.com/bootstrap/something' },
-                        { rel: 'alternate', hreflang: 'es', href: 'http://es.example.com/bootstrap-demo' }
-                    ]
-                }
+                path: '**',
+                redirectTo: 'home'
             }
         ])
     ],
@@ -169,12 +162,12 @@ export class AppModule {
 
 export function configAuth(_oidcSecurityService: OidcSecurityService) {
     let config = new OpenIDImplicitFlowConfiguration();
-    config.stsServer = 'http://localhost:7950';
-    config.redirect_url = 'http://localhost:5000';
-    config.client_id = '9d013e00-91df-487f-b260-c33e77dfb844';
+    config.stsServer = 'http://localhost:5000';
+    config.redirect_url = 'http://localhost:40220/signin-oidc';
+    config.client_id = 'mvc';
     config.response_type = 'id_token token';
-    config.scope = 'openid email profile';
-    config.post_logout_redirect_uri = 'http://localhost:5000/Unauthorized';
+    config.scope = 'openid profile';
+    config.post_logout_redirect_uri = 'http://localhost:40220/Unauthorized';
     config.startup_route = '/home';
     config.forbidden_route = 'Forbidden';
     config.unauthorized_route = '/Unauthorized';

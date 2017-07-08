@@ -69,7 +69,12 @@
     </button>
 
     <button class="btn btn-default" (click)="setLanguage('no')">
-        <span class="flag-icon flag-icon-no"></span> {{ 'NORWEGIAN' | translate }} 
+      <span class="flag-icon flag-icon-no"></span> {{ 'NORWEGIAN' | translate }}
+    </button>
+
+
+    <button class="btn btn-default" [disabled]="oidcSecurityService.isAuthorized" (click)="signin()">
+      signIn
     </button>
 
   </div>

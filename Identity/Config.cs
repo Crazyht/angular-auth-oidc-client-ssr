@@ -66,7 +66,8 @@ namespace QuickstartIdentityServer
                     ClientId = "mvc",
                     ClientName = "MVC Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
-
+                    AllowAccessTokensViaBrowser = true,
+                    AllowOfflineAccess = true,
                     RedirectUris = { "http://localhost:40220/signin-oidc" },
                     PostLogoutRedirectUris = { "http://localhost:40220/signout-callback-oidc" },
 
