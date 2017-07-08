@@ -1,11 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
 import { AuthConfiguration } from '../modules/auth.configuration';
+import { CustomStorage } from "./CustomStorage";
 
 @Injectable()
 export class OidcSecurityCommon {
-
-    storage: any;
-
     storage_access_token = 'authorizationData';
     storage_id_token = 'authorizationDataIdToken';
     storage_is_authorized = '_isAuthorized';
@@ -16,11 +14,12 @@ export class OidcSecurityCommon {
     storage_session_state = 'session_state';
     storage_silent_renew_running = 'storage_silent_renew_running';
 
-    constructor(private authConfiguration: AuthConfiguration) {
+    constructor(private authConfiguration: AuthConfiguration, public storage: CustomStorage) {
     }
 
     setupModule() {
-        if (typeof Storage !== 'undefined') { this.storage = sessionStorage; } //localStorage;
+        // Now injected by angular
+        //if (typeof Storage !== 'undefined') { this.storage = sessionStorage; } //localStorage;
     }
 
     setStorage(storage: any) {
@@ -29,7 +28,11 @@ export class OidcSecurityCommon {
 
     retrieve(key: string): any {
         if (this.storage) {
-            return JSON.parse(this.storage.getItem(key));
+            const value = this.storage.getItem(key);
+            if (value && value !== '')
+                return JSON.parse(value);
+            else
+                return null;
         }
 
         return;

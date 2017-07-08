@@ -30,9 +30,6 @@
     <Content Include="Client\tsconfig.server.aot.json" />
     <Content Include="Client\tsconfig.server.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Client\modules\angular-auth-oidc-client\" />
-  </ItemGroup>
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec Command="npm install" />

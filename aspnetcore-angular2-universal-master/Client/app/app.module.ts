@@ -10,6 +10,9 @@ import { Ng2BootstrapModule } from 'ngx-bootstrap';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+
+import { AuthModule, OidcSecurityService, OpenIDImplicitFlowConfiguration } from '../modules/angular-auth-oidc-client';
+
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './containers/home/home.component';
@@ -52,7 +55,7 @@ export function createTranslateLoader(http: Http, baseHref) {
         HttpModule,
         FormsModule,
         Ng2BootstrapModule.forRoot(), // You could also split this up if you don't want the Entire Module imported
-
+        AuthModule.forRoot(),
         TransferHttpModule, // Our Http TransferData method
 
         // i18n support
@@ -158,4 +161,25 @@ export function createTranslateLoader(http: Http, baseHref) {
     ]
 })
 export class AppModule {
+    constructor(_oidcSecurityService: OidcSecurityService) {
+        configAuth(_oidcSecurityService);
+    }
+}
+
+
+export function configAuth(_oidcSecurityService: OidcSecurityService) {
+    let config = new OpenIDImplicitFlowConfiguration();
+    config.stsServer = 'http://localhost:7950';
+    config.redirect_url = 'http://localhost:5000';
+    config.client_id = '9d013e00-91df-487f-b260-c33e77dfb844';
+    config.response_type = 'id_token token';
+    config.scope = 'openid email profile';
+    config.post_logout_redirect_uri = 'http://localhost:5000/Unauthorized';
+    config.startup_route = '/home';
+    config.forbidden_route = 'Forbidden';
+    config.unauthorized_route = '/Unauthorized';
+    config.log_console_warning_active = true;
+    config.log_console_debug_active = true;
+    config.max_id_token_iat_offset_allowed_in_seconds = 10;
+    _oidcSecurityService.setupModule(config);
 }

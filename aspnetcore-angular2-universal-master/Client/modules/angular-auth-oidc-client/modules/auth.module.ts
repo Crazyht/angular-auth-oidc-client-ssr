@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+﻿import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { OidcSecurityService } from '../services/oidc.security.service';
 import { AuthConfiguration, DefaultConfiguration } from './auth.configuration';
@@ -8,6 +8,7 @@ import { OidcSecuritySilentRenew } from '../services/oidc.security.silent-renew'
 import { OidcSecurityUserService } from '../services/oidc.security.user-service';
 import { OidcSecurityCommon } from '../services/oidc.security.common';
 import { AuthWellKnownEndpoints } from '../services/auth.well-known-endpoints';
+import { CustomStorage } from "../services/CustomStorage";
 
 @NgModule()
 export class AuthModule {
@@ -23,7 +24,8 @@ export class AuthModule {
                 OidcSecurityCommon,
                 AuthConfiguration,
                 DefaultConfiguration,
-                AuthWellKnownEndpoints
+                AuthWellKnownEndpoints,
+                CustomStorage
             ]
         };
     }
@@ -39,7 +41,8 @@ export class AuthModule {
                 OidcSecurityUserService,
                 OidcSecurityCommon,
                 AuthConfiguration,
-                AuthWellKnownEndpoints
+                AuthWellKnownEndpoints,
+                CustomStorage
             ]
         };
     }
